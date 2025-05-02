@@ -11,7 +11,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   return (
     <Link 
       to={`/producto/${product.id}`}
-      className="block bg-surface-white transition-colors rounded-lg overflow-hidden shadow-card w-full max-w-[280px] mx-auto hover:scale-[1.02] hover:shadow-card-hover hover:bg-[#AEB2AF] duration-300"
+      className="block bg-surface-white transition-colors rounded-xl overflow-hidden shadow-xl w-full max-w-[280px] mx-auto hover:scale-[1.02] hover:shadow-card-hover hover:bg-[#AEB2AF] duration-300"
       style={{
         backgroundImage: `url(${fondoCategoria})`, // Ruta de la imagen
         backgroundSize: 'cover', // Asegura que la imagen cubra todo el contenedor
@@ -55,7 +55,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               onClick={(e) => e.stopPropagation()}
             >
               producto_fichatecnica.pdf
-              <svg className="w-4 h-4 ml-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+              <svg className="w-8 h-8 ml-1 flex-shrink-0 text-secondary stroke-secondary-dark stroke-1 hover:text-secondary-dark" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v3.586L7.707 9.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 10.586V7z" clipRule="evenodd" />
               </svg>
             </a>
@@ -71,7 +71,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               onClick={(e) => e.stopPropagation()}
             >
               producto_hojadeseguridad.pdf
-              <svg className="w-4 h-4 ml-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+              <svg className="w-8 h-8 ml-1 flex-shrink-0 text-secondary stroke-secondary-dark stroke-1 hover:text-secondary-dark" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v3.586L7.707 9.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 10.586V7z" clipRule="evenodd" />
               </svg>
             </a>

@@ -120,7 +120,7 @@ const CategoryPage: React.FC = () => {
                         onClick={() => handleCultivoFilter(cultivo)}
                         className={`px-4 py-1 rounded-full text-sm ${
                           selectedCultivo === cultivo
-                            ? 'bg-secondary-dark text-white'
+                            ? 'bg-secondary-dark text-dark'
                             : 'bg-secondary-light text-surface-dark hover:bg-secondary border border-secondary-dark'
                         }`}
                       >
