@@ -1,5 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+//import './firebase/config'; // Importa el archivo config.ts para que se ejecute el script seed
+
 
 // Layout components
 import Navbar from './components/layout/Navbar';
@@ -11,6 +13,10 @@ import CategoryPage from './pages/CategoryPage';
 import ProductPage from './pages/ProductPage';
 import AdminPage from './pages/AdminPage';
 import NotFoundPage from './pages/NotFoundPage';
+import AuthPage from './components/layout/AuthPage';
+import ProtectedRoute from './components/ui/ProtectedRoute';
+
+
 
 function App() {
   return (
@@ -22,7 +28,11 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/categoria/:categoryId" element={<CategoryPage />} />
             <Route path="/producto/:productId" element={<ProductPage />} />
-            <Route path="/admin" element={<AdminPage />} />
+            <Route path="/admin"
+            element={ <ProtectedRoute>
+              <AdminPage />
+            </ProtectedRoute>} />
+            <Route path="/auth" element={<AuthPage />} /> {/* Nueva ruta */}
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </main>

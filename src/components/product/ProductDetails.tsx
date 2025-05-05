@@ -62,9 +62,9 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
             className="text-link hover:underline flex items-center"
           >
             producto_hojaseguridad.pdf
-            <svg className="w-8 h-8 ml-1" fill="currentColor" viewBox="0 0 20 20">
+            {/*<svg className="w-8 h-8 ml-1" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="..." clipRule="evenodd" />
-            </svg>
+            </svg>*/}
           </a>
         </div>
         <div>
@@ -76,9 +76,9 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
             className="text-link hover:underline flex items-center"
           >
             producto_fichatecnica.pdf
-            <svg className="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 20 20">
+            {/*<svg className="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="..." clipRule="evenodd" />
-            </svg>
+            </svg>*/}
           </a>
         </div>
         <div className="pt-4">

@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import ProductDetails from '../components/product/ProductDetails';
 import { Producto } from '../types';
-import { getProductById } from '../services/productService';
+import { getProductById, getAllProducts } from '../services/productService';
 
 // Sample products data for demonstration
-import { sampleProducts } from '../data/sampleData';
+//import { sampleProducts } from '../data/sampleData';
 
-const ProductPage: React.FC = () => {
+{/*const ProductPage: React.FC = () => {
   const { productId } = useParams<{ productId: string }>();
   const [product, setProduct] = useState<Producto | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -64,6 +64,68 @@ const ProductPage: React.FC = () => {
     );
   }
   
+  return <ProductDetails product={product} />;
+};
+
+export default ProductPage;*/}
+
+const ProductPage: React.FC = () => {
+  const { productId } = useParams<{ productId: string }>();
+  const [product, setProduct] = useState<Producto | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        if (productId) {
+          // Llama a Firestore para obtener el producto por ID
+          const data = await getProductById(productId);
+
+          if (!data) {
+            setError('Producto no encontrado');
+            console.error('Producto no encontrado con ID:', productId);
+          } else {
+            setProduct(data);
+          }
+        }
+      } catch (err) {
+        console.error(err);
+        setError('Error al cargar el producto');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProduct();
+  }, [productId]);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
+  if (error || !product) {
+    return (
+      <div className="container mx-auto px-4 py-16 text-center">
+        <h1 className="text-2xl font-bold mb-4">Error</h1>
+        <p className="text-surface-dark mb-8">{error || 'Producto no encontrado'}</p>
+        <button
+          onClick={() => window.history.back()}
+          className="px-6 py-2 bg-primary text-white rounded-md hover:bg-primary-dark transition-colors"
+        >
+          Volver atrás
+        </button>
+      </div>
+    );
+  }
+
   return <ProductDetails product={product} />;
 };
 

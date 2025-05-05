@@ -29,7 +29,7 @@ const categories: CategoriaInfo[] = [
   {
     id: 'insumos',
     nombre: 'Insumos',
-    descripcion: 'Sistemas de monitoreo avanzado.',
+    descripcion: 'Sistemas de monitoreo avanzado para plantas.',
     imagen: './src/assets/images/category/CInsumos.png',
     path: '/categoria/insumos'
   }

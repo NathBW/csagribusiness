@@ -1,3 +1,5 @@
+import { Timestamp } from 'firebase/firestore';
+
 export type Cultivo = string;
 
 export type Caracteristicas = {
@@ -29,7 +31,7 @@ export interface Producto {
   descripcion: string;
   imagen: string;
   categoria: 'plaguicidas' | 'fertilizantes' | 'coadyuvantes' | 'insumos';
-  ultimaActualizacion: Date | string;
+  ultimaActualizacion: Date | string | Timestamp;
   cultivos: Cultivo[];
   fichaTecnica: string;
   hojaSeguridad: string;
