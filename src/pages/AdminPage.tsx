@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
-import { createProduct } from '../services/productService';
+import React, { useState, useEffect } from 'react';
+import { createProduct, getProductById } from '../services/productService';
+import { uploadFileToCloudinary } from '../data/uploadFile'
 
 const AdminPage: React.FC = () => {
   const [product, setProduct] = useState({
+    id: '', // ID del producto, se generará automáticamente
     nombre: '',
     descripcion: '',
     categoria: 'insumos',
@@ -32,10 +34,28 @@ const AdminPage: React.FC = () => {
     },
   });
 
+  const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
+  useEffect(() => {
+    const fetchProduct = async () => {
+      if (isEditing && product.id) {
+        try {
+          const fetchedProduct = await getProductById(product.id);
+          if (fetchedProduct) {
+            setProduct(fetchedProduct);
+          }
+        } catch (error) {
+          console.error('Error al cargar el producto:', error);
+        }
+      }
+    };
+  
+    fetchProduct();
+  }, [isEditing, product.id]);
+  
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
   
@@ -113,9 +133,54 @@ const AdminPage: React.FC = () => {
     }
   };
 
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+  
+    try {
+      const url = await uploadFileToCloudinary(file);
+      setProduct((prev) => ({ ...prev, imagen: url }));
+    } catch (err) {
+      console.error('Error subiendo imagen:', err);
+    }
+  };
+
+  const handleFichaTecnicaUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+  
+    try {
+      const url = await uploadFileToCloudinary(file); // ¡Funciona con PDF también!
+      setProduct((prev) => ({ ...prev, fichaTecnica: url }));
+    } catch (err) {
+      console.error('Error subiendo archivo:', err);
+    }
+  };
+
+  const handleHojaSeguridadUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+  
+    try {
+      const url = await uploadFileToCloudinary(file); // ¡Funciona con PDF también!
+      setProduct((prev) => ({ ...prev, hojaSeguridad: url }));
+    } catch (err) {
+      console.error('Error subiendo archivo:', err);
+    }
+  };
+
+  
+
   return (
     <div className="container mx-auto px-4 py-12">
-      <h1 className="text-3xl font-bold mb-8">Crear Producto</h1>
+       <h1 className="text-3xl font-bold mb-8">{isEditing ? 'Editar Producto' : 'Crear Producto'}</h1>
+      <button
+        onClick={() => setIsEditing((prev) => !prev)}
+        className="mb-4 px-4 py-2 bg-gray-500 text-white rounded"
+      >
+        {isEditing ? 'Cambiar a Crear Producto' : 'Cambiar a Editar Producto'}
+      </button>
 
       {successMessage && <p className="text-green-600 mb-4">{successMessage}</p>}
       {errorMessage && <p className="text-red-600 mb-4">{errorMessage}</p>}
@@ -162,11 +227,14 @@ const AdminPage: React.FC = () => {
         <div>
           <label className="block text-sm font-medium">URL de la Imagen</label>
           <input
-            type="text"
-            name="imagen"
-            value={product.imagen}
-            onChange={handleChange}
-            className="w-full border rounded px-3 py-2"
+            //type="text"
+            //name="imagen"
+            //value={product.imagen}
+            type="file"
+            accept="image/*"
+            //onChange={handleChange}
+            onChange={handleImageUpload}
+            //className="w-full border rounded px-3 py-2"
           />
         </div>
 
@@ -177,6 +245,9 @@ const AdminPage: React.FC = () => {
             name="fichaTecnica"
             value={product.fichaTecnica}
             onChange={handleChange}
+            //type="file"
+            //onChange={handleFichaTecnicaUpload}
+            //accept="application/pdf"
             className="w-full border rounded px-3 py-2"
           />
         </div>
@@ -188,6 +259,9 @@ const AdminPage: React.FC = () => {
             name="hojaSeguridad"
             value={product.hojaSeguridad}
             onChange={handleChange}
+            //type="file"
+            //onChange={handleHojaSeguridadUpload}
+            //accept="application/pdf"
             className="w-full border rounded px-3 py-2"
           />
         </div>

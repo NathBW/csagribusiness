@@ -44,6 +44,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             </div>
           </div>
         </div>
+
+      </Link>
+
               {/* Enlaces internos (fuera del Link principal) */}
       <div className="space-y-2 mb-2 p-4">
         <div className="flex flex-col text-sm">
@@ -94,9 +97,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           </a>
         </div>
       </div>
-      </Link>
-
-
 
       <div className="flex justify-start ml-4 mb-4"> {/* Agregué margen inferior */}
         <button
