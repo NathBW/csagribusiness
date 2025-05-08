@@ -3,6 +3,8 @@ import { Producto } from '../../types';
 import { formatDate } from '../../utils/helpers';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { Accordion, AccordionSummary, AccordionDetails, Typography } from '@mui/material';
+import { ArrowLeftIcon } from '@heroicons/react/24/solid';
+
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 interface ProductDetailsProps {
@@ -19,8 +21,9 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
             onClick={() => window.history.back()} 
             className="self-start mb-4 md:mb-0 mr-10 text-primary hover:text-[#FDDBAB] transition-colors"
           >
-            <ArrowBackIosIcon sx={{backgroundColor:"#FDDBAB", borderRadius:"20px", paddingLeft: "7px", border: "1px solid #F6811F", ":hover" : {backgroundColor: "#F6811F"}}} /> Volver
-                  
+            <div className="bg-[#BAE5FD] border border-[#017EC2] rounded-full p-1 hover:bg-[#7CD1FD] transition-colors">
+              <ArrowLeftIcon className="h-5 w-5 text-[#017EC2]" />
+            </div>                  
           </button>
           
           <div className="flex-1 flex flex-col md:flex-row items-center md:space-x-12">
@@ -100,9 +103,15 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
           </a>
         </div>
         <div className="pt-4">
-          <button className="w-full py-2 px-4 bg-accent-light text-surface-dark border border-accent hover:bg-accent hover:text-white transition-colors rounded-md font-medium">
-            Comprar
-          </button>
+        <a
+          href={product.compra}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center justify-center py-2 px-6 bg-accent-light text-surface-dark border border-accent hover:bg-[#FBC076] transition-colors rounded-md font-medium"
+          style={{ width: 'auto' }}
+        >
+          Comprar
+        </a>
         </div>
       </div>
     </div>

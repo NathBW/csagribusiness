@@ -1,4 +1,4 @@
-import { collection, getDocs, doc, getDoc, query, where, addDoc, updateDoc, deleteDoc, serverTimestamp, QueryDocumentSnapshot, limit, orderBy, startAfter  } from 'firebase/firestore';
+import { collection, getDocs, doc, getDoc, setDoc, query, where, addDoc, updateDoc, deleteDoc, serverTimestamp, QueryDocumentSnapshot, limit, orderBy, startAfter  } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { db, storage } from '../firebase/config';
 import { Producto } from '../types';
@@ -127,16 +127,15 @@ export const uploadProductDocument = async (
 };
 
 // Create a new product
-export const createProduct = async (product: Omit<Producto, 'id'>): Promise<string> => {
-  console.log('Creando producto:', product);
-  const docRef = await addDoc(productosRef, {
+
+export const createProduct = async (product: Producto): Promise<string> => {
+  const docRef = doc(db, 'productos', product.id); // Usa el ID personalizado
+  await setDoc(docRef, {
     ...product,
     ultimaActualizacion: new Date(),
   });
-  console.log('Producto creado con ID:', docRef.id);
-  return docRef.id;
+  return product.id;
 };
-
 //export const createProduct = async (product: Omit<Producto, 'id'>): Promise<string> => {
 //  const defaultValues = {
 //    descripcion: 'Descripción por defecto',

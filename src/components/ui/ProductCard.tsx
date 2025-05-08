@@ -2,13 +2,34 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Producto } from '../../types';
 import fondoCategoria from '/src/assets/images/ProductoFondo3.png';
+import { useAuth } from '../layout/AuthContext';
+import { deleteProduct } from '../../services/productService';
+import { useNavigate } from 'react-router-dom';
+import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/solid';
+
+
 
 interface ProductCardProps {
   product: Producto;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const handleDelete = async () => {
+    const confirmDelete = window.confirm(`¿Seguro que deseas eliminar el producto "${product.nombre}"?`);
+    if (!confirmDelete) return;
+    try {
+      await deleteProduct(product.id);
+      alert('Producto eliminado con éxito');
+      window.location.reload();
+    } catch (error) {
+      console.error('Error al eliminar producto:', error);
+      alert('Hubo un error al eliminar el producto.');
+    }
+  };
   return (
+    
     <div
       className="block bg-surface-white transition-colors rounded-2xl overflow-hidden shadow-lg w-full max-w-[280px] mx-auto hover:scale-[1.02] hover:shadow-card-hover hover:bg-[#AEB2AF] duration-300"
       style={{
@@ -99,13 +120,39 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       </div>
 
       <div className="flex justify-start ml-4 mb-4"> {/* Agregué margen inferior */}
+      <a
+        href={product.compra}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex items-center justify-center py-2 px-6 bg-accent-light text-surface-dark border border-accent hover:bg-[#FBC076] transition-colors rounded-md font-medium"
+        style={{ width: 'auto' }}
+      >
+        Comprar
+      </a>
+        {user && (
+      <div className="flex gap-2 ml-4">
         <button
-          className="inline-flex items-center justify-center py-2 px-6 bg-accent-light text-surface-dark border border-accent hover:bg-[#FBC076] transition-colors rounded-md font-medium"
-          style={{ width: 'auto' }} // Ajusta el ancho del botón
+          onClick={() => navigate(`/admin/editar/${product.id}`)}
+          className="p-2 bg-blue-300  rounded-full border border-blue-700  text-white rounded hover:bg-blue-500 transition-colors"
+          title="Editar"
         >
-          Comprar
+              <PencilSquareIcon className="h-5 w-5 text-blue-700 " />
+        </button>
+        <button
+          onClick={handleDelete}
+          className="p-2 bg-red-300 rounded-full border border-red-700 text-white hover:bg-red-500 transition-colors"
+          title="Eliminar"
+        >
+    <TrashIcon className="h-5 w-5 text-red-700" />
         </button>
       </div>
+
+      
+
+)}
+
+      </div>
+      
     </div>
   );
 };

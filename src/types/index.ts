@@ -38,6 +38,7 @@ export interface Producto {
   caracteristicas: Caracteristicas;
   registroNacional: string;
   instruccionesUso: InstruccionesUso;
+  compra: string;
 }
 
 export interface CategoriaInfo {

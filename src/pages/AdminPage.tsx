@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { createProduct, getProductById } from '../services/productService';
 import { uploadFileToCloudinary } from '../data/uploadFile'
+import { XMarkIcon } from '@heroicons/react/24/solid';
+
 
 const AdminPage: React.FC = () => {
   const [product, setProduct] = useState({
     id: '', // ID del producto, se generará automáticamente
     nombre: '',
     descripcion: '',
+    compra: '',
     categoria: 'insumos',
     imagen: '',
     fichaTecnica: '',
@@ -103,8 +106,10 @@ const AdminPage: React.FC = () => {
       await createProduct(productToSend); // Llama a la función `createProduct`
       setSuccessMessage('Producto creado con éxito.');
       setProduct({
+        id  : '', // Reinicia el ID
         nombre: '',
         descripcion: '',
+        compra: '',
         categoria: 'insumos',
         imagen: '',
         fichaTecnica: '',
@@ -124,6 +129,7 @@ const AdminPage: React.FC = () => {
           precaucionAdvertencia: '',
           cuadroUso: [],
         },
+
       });
     } catch (error) {
       console.error('Error al crear el producto:', error);
@@ -174,14 +180,14 @@ const AdminPage: React.FC = () => {
 
   return (
     <div className="container mx-auto px-4 py-12">
-       <h1 className="text-3xl font-bold mb-8">{isEditing ? 'Editar Producto' : 'Crear Producto'}</h1>
+       {/*<h1 className="text-3xl font-bold mb-8">{isEditing ? 'Editar Producto' : 'Crear Producto'}</h1>
       <button
         onClick={() => setIsEditing((prev) => !prev)}
         className="mb-4 px-4 py-2 bg-gray-500 text-white rounded"
       >
         {isEditing ? 'Cambiar a Crear Producto' : 'Cambiar a Editar Producto'}
-      </button>
-
+      </button>*/}
+      <h1 className="text-3xl font-bold mb-8">Crear Producto</h1>
       {successMessage && <p className="text-green-600 mb-4">{successMessage}</p>}
       {errorMessage && <p className="text-red-600 mb-4">{errorMessage}</p>}
 
@@ -195,6 +201,7 @@ const AdminPage: React.FC = () => {
             onChange={handleChange}
             className="w-full border rounded px-3 py-2"
             required
+            style={{ boxShadow: 'inset 2px 2px 6px rgba(0, 0, 0, 0.3)' }}
           />
         </div>
 
@@ -206,6 +213,7 @@ const AdminPage: React.FC = () => {
             onChange={handleChange}
             className="w-full border rounded px-3 py-2"
             required
+            style={{ boxShadow: 'inset 2px 2px 6px rgba(0, 0, 0, 0.3)' }}
           />
         </div>
 
@@ -232,10 +240,18 @@ const AdminPage: React.FC = () => {
             //value={product.imagen}
             type="file"
             accept="image/*"
+            id='fileUpload'
             //onChange={handleChange}
             onChange={handleImageUpload}
             //className="w-full border rounded px-3 py-2"
+            className='hidden'
           />
+          <label
+          htmlFor="fileUpload"
+          className=" mt-2 text-sm inline-block bg-blue-300 text-surface-dark border border-blue-700 px-4 py-2 rounded-md cursor-pointer text-center hover:bg-blue-500 hover:text-surface-light transition-colors"
+          >
+            Subir Imagen
+          </label>
         </div>
 
         <div>
@@ -249,6 +265,7 @@ const AdminPage: React.FC = () => {
             //onChange={handleFichaTecnicaUpload}
             //accept="application/pdf"
             className="w-full border rounded px-3 py-2"
+            style={{ boxShadow: 'inset 2px 2px 6px rgba(0, 0, 0, 0.3)' }}
           />
         </div>
 
@@ -263,6 +280,22 @@ const AdminPage: React.FC = () => {
             //onChange={handleHojaSeguridadUpload}
             //accept="application/pdf"
             className="w-full border rounded px-3 py-2"
+            style={{ boxShadow: 'inset 2px 2px 6px rgba(0, 0, 0, 0.3)' }}
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium">URL de Compra</label>
+          <input
+            type="text"
+            name="compra"
+            value={product.compra}
+            onChange={handleChange}
+            //type="file"
+            //onChange={handleFichaTecnicaUpload}
+            //accept="application/pdf"
+            className="w-full border rounded px-3 py-2"
+            style={{ boxShadow: 'inset 2px 2px 6px rgba(0, 0, 0, 0.3)' }}
           />
         </div>
 
@@ -280,6 +313,7 @@ const AdminPage: React.FC = () => {
           setProduct((prev) => ({ ...prev, cultivos: nuevosCultivos }));
         }}
         className="w-full border rounded px-3 py-2"
+        style={{ boxShadow: 'inset 2px 2px 6px rgba(0, 0, 0, 0.3)' }}
       />
       <button
         type="button"
@@ -288,8 +322,9 @@ const AdminPage: React.FC = () => {
           setProduct((prev) => ({ ...prev, cultivos: nuevosCultivos }));
         }}
         className="text-red-600 font-bold"
+        
       >
-        ✕
+        <XMarkIcon className="text-accent rounded-full bg-red-300 border border-red-700 text-red-700 h-5 w-5 hover:bg-red-500 transition-colors" ></XMarkIcon>  
       </button>
     </div>
   ))}
@@ -297,7 +332,7 @@ const AdminPage: React.FC = () => {
   <button
     type="button"
     onClick={() => setProduct((prev) => ({ ...prev, cultivos: [...prev.cultivos, ''] }))}
-    className="mt-2 text-blue-600 underline"
+    className="mt-2 text-blue-500 underline hover:text-blue-700 transition-colors"
   >
     + Añadir Cultivo
   </button>
@@ -309,7 +344,7 @@ const AdminPage: React.FC = () => {
   <label className="block text-sm font-medium mb-2">Cuadro de Uso</label>
 
   {product.instruccionesUso.cuadroUso.map((fila, index) => (
-    <div key={index} className="grid grid-cols-1 md:grid-cols-5 gap-2 mb-3">
+    <div key={index} className="grid grid-cols-1 md:grid-cols-5 gap-2 mb-3" >
       <input
         type="text"
         placeholder="Cultivo"
@@ -326,6 +361,8 @@ const AdminPage: React.FC = () => {
           }));
         }}
         className="border rounded px-2 py-1"
+        style={{ boxShadow: 'inset 2px 2px 6px rgba(0, 0, 0, 0.3)' }}
+
       />
       <input
         type="text"
@@ -343,6 +380,8 @@ const AdminPage: React.FC = () => {
           }));
         }}
         className="border rounded px-2 py-1"
+        style={{ boxShadow: 'inset 2px 2px 6px rgba(0, 0, 0, 0.3)' }}
+
       />
       <input
         type="text"
@@ -360,6 +399,8 @@ const AdminPage: React.FC = () => {
           }));
         }}
         className="border rounded px-2 py-1"
+        style={{ boxShadow: 'inset 2px 2px 6px rgba(0, 0, 0, 0.3)' }}
+
       />
       <input
         type="text"
@@ -377,6 +418,8 @@ const AdminPage: React.FC = () => {
           }));
         }}
         className="border rounded px-2 py-1"
+        style={{ boxShadow: 'inset 2px 2px 6px rgba(0, 0, 0, 0.3)' }}
+
       />
       <div className="flex gap-2">
         <input
@@ -395,6 +438,9 @@ const AdminPage: React.FC = () => {
             }));
           }}
           className="border rounded px-2 py-1 w-full"
+          style={{ boxShadow: 'inset 2px 2px 6px rgba(0, 0, 0, 0.3)' }}
+
+          
         />
         <button
           type="button"
@@ -410,7 +456,7 @@ const AdminPage: React.FC = () => {
           }}
           className="text-red-600 font-bold"
         >
-          ✕
+          <XMarkIcon className="text-accent rounded-full bg-red-300 border border-red-700 text-red-700 h-5 w-5 hover:bg-red-500 transition-colors" ></XMarkIcon>  
         </button>
       </div>
     </div>
@@ -436,14 +482,14 @@ const AdminPage: React.FC = () => {
         },
       }));
     }}
-    className="mt-2 text-blue-600 underline"
+    className="mt-2 text-blue-500 underline hover:text-blue-700 transition-colors underline"
   >
     + Añadir Fila
   </button>
 </div>
 
 
-        <div>
+        {/*<div>
           <label className="block text-sm font-medium">Composición</label>
           <input
             type="text"
@@ -452,7 +498,7 @@ const AdminPage: React.FC = () => {
             onChange={handleChange}
             className="w-full border rounded px-3 py-2"
         />
-        </div>
+        </div>*/}
 
 
         <div>
@@ -463,6 +509,7 @@ const AdminPage: React.FC = () => {
             value={product.registroNacional}
             onChange={handleChange}
             className="w-full border rounded px-3 py-2"
+            style={{ boxShadow: 'inset 2px 2px 6px rgba(0, 0, 0, 0.3)' }}
           />
         </div>
 
@@ -474,6 +521,7 @@ const AdminPage: React.FC = () => {
             value={product.caracteristicas.ingredientesActivos}
             onChange={handleChange}
             className="w-full border rounded px-3 py-2"
+            style={{ boxShadow: 'inset 2px 2px 6px rgba(0, 0, 0, 0.3)' }}
           />
         </div>
 
@@ -486,6 +534,7 @@ const AdminPage: React.FC = () => {
             value={product.caracteristicas.tipoFormulacion}
             onChange={handleChange}
             className="w-full border rounded px-3 py-2"
+            style={{ boxShadow: 'inset 2px 2px 6px rgba(0, 0, 0, 0.3)' }}
         />
         </div>
 
@@ -497,6 +546,7 @@ const AdminPage: React.FC = () => {
             value={product.caracteristicas.clasificacionToxicologica}
             onChange={handleChange}
             className="w-full border rounded px-3 py-2"
+            style={{ boxShadow: 'inset 2px 2px 6px rgba(0, 0, 0, 0.3)' }}
         />
         </div>
 
@@ -508,6 +558,7 @@ const AdminPage: React.FC = () => {
             value={product.caracteristicas.presentacion}
             onChange={handleChange}
             className="w-full border rounded px-3 py-2"
+            style={{ boxShadow: 'inset 2px 2px 6px rgba(0, 0, 0, 0.3)' }}
         />
         </div>
 
@@ -519,6 +570,7 @@ const AdminPage: React.FC = () => {
           value={product.instruccionesUso.modoUso}
           onChange={handleChange}
           className="w-full border rounded px-3 py-2"
+          style={{ boxShadow: 'inset 2px 2px 6px rgba(0, 0, 0, 0.3)' }}
       />
       </div>
       
@@ -530,6 +582,7 @@ const AdminPage: React.FC = () => {
           value={product.instruccionesUso.preparacion}
           onChange={handleChange}
           className="w-full border rounded px-3 py-2"
+          style={{ boxShadow: 'inset 2px 2px 6px rgba(0, 0, 0, 0.3)' }}
       />
       </div>
 
@@ -542,6 +595,7 @@ const AdminPage: React.FC = () => {
           value={product.instruccionesUso.precaucionAdvertencia}
           onChange={handleChange}
           className="w-full border rounded px-3 py-2"
+          style={{ boxShadow: 'inset 2px 2px 6px rgba(0, 0, 0, 0.3)' }}
       />
       </div>
 
@@ -549,7 +603,7 @@ const AdminPage: React.FC = () => {
 
         <button
           type="submit"
-          className="px-4 py-2 bg-primary text-white rounded hover:bg-primary-dark"
+          className="px-4 py-2 bg-accent-light text-surface-dark border border-accent hover:bg-accent hover:text-white transition-colors rounded "
           disabled={loading}
         >
           {loading ? 'Creando...' : 'Crear Producto'}

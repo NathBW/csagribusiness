@@ -274,8 +274,8 @@ const CategoryPage: React.FC = () => {
               )}
 
               {filteredProducts.length === 0 ? (
-                <div className="text-center py-8">
-                  <p>No se encontraron productos en esta categoría.</p>
+                <div className="text-center py-8 text-3xl font-bold">
+                  <p>¡OH! Parece que no tenemos productos con esta categoría.</p>
                 </div>
               ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-8 justify-items-center">
