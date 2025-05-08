@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import ProductCard from '../components/ui/ProductCard';
 import { Producto } from '../types';
-import { getProductsByCategory, getAllProducts } from '../services/productService';
+import { getProductsByCategory, getPaginatedProducts, searchProductsByName } from '../services/productService';
+import { QueryDocumentSnapshot } from 'firebase/firestore';
+import {MagnifyingGlassIcon } from '@heroicons/react/24/solid';
 
 // Sample products data for demonstration
 //import { sampleProducts } from '../data/sampleData';
@@ -165,35 +167,67 @@ const getCategoryTitle = (categoryId: string): string => {
 };
 
 const CategoryPage: React.FC = () => {
+  const [showFilters, setShowFilters] = useState(false);
   const { categoryId } = useParams<{ categoryId: string }>();
   const [products, setProducts] = useState<Producto[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [filteredProducts, setFilteredProducts] = useState<Producto[]>([]);
   const [selectedCultivo, setSelectedCultivo] = useState<string | null>(null);
+  const [lastVisible, setLastVisible] = useState<QueryDocumentSnapshot | null>(null);
+  const [hasMore, setHasMore] = useState<boolean>(true);
+  const [showSearch, setShowSearch] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  
+
 
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchPaginatedProducts = async () => {
       try {
         setLoading(true);
         setError(null);
+        setLastVisible(null); // reiniciar para categoría nueva
 
-        // Obtén los productos desde Firestore
-        const data = await getProductsByCategory(categoryId || '');
-        setProducts(data);
-        setFilteredProducts(data);
+        const { products: firstPage, lastVisible: lastDoc } = await getPaginatedProducts(null, 8);
+        const filteredByCategory = firstPage.filter(p => p.categoria === categoryId);
+
+        setProducts(filteredByCategory);
+        setFilteredProducts(filteredByCategory);
+        setLastVisible(lastDoc);
+        setHasMore(!!lastDoc);
       } catch (err) {
-        setError('Error al cargar los productos');
         console.error(err);
+        setError('Error al cargar los productos.');
       } finally {
         setLoading(false);
       }
     };
 
     if (categoryId) {
-      fetchProducts();
+      fetchPaginatedProducts();
     }
   }, [categoryId]);
+
+  const loadMore = async () => {
+  if (!hasMore || loading || !lastVisible) return;
+
+  try {
+    setLoading(true);
+    const { products: nextPage, lastVisible: newLastVisible } = await getPaginatedProducts(lastVisible, 8);
+    const filteredByCategory = nextPage.filter(p => p.categoria === categoryId);
+
+    setProducts(prev => [...prev, ...filteredByCategory]);
+    setFilteredProducts(prev => [...prev, ...filteredByCategory]);
+    setLastVisible(newLastVisible);
+    setHasMore(!!newLastVisible);
+  } catch (error) {
+    console.error(error);
+    setError('No se pudo cargar más productos.');
+  } finally {
+    setLoading(false);
+  }
+};
 
   // Obtener lista única de cultivos
   const allCultivos = React.useMemo(() => {
@@ -241,7 +275,21 @@ const CategoryPage: React.FC = () => {
             </div>
           ) : (
             <>
-              {allCultivos.length > 0 && (
+            
+            {allCultivos.length > 0  && (
+            <div className="mb-4 text-left">
+              <button
+                onClick={() => setShowFilters(prev => !prev)}
+                className="px-4 py-2 bg-[#BAE5FD] text-[#017EC2] rounded border border-[#017EC2] rounded-md hover:bg-[#7CD1FD] transition-colors"
+              >
+                {showFilters ? 'Ocultar Filtros' : 'Filtrar'}
+              </button>
+            </div>
+            )}
+
+
+
+              {allCultivos.length > 0 && showFilters && (
                 <div className="mb-8">
                   <h2 className="text-lg font-medium mb-3">Filtrar por cultivo:</h2>
                   <div className="flex flex-wrap gap-2">
@@ -269,9 +317,43 @@ const CategoryPage: React.FC = () => {
                         {cultivo}
                       </button>
                     ))}
+                    
                   </div>
                 </div>
               )}
+
+
+              <div className="mb-4 flex justify-start items-center gap-2">
+              {allCultivos.length > 0  && (
+                <button
+                  onClick={() => setShowSearch(prev => !prev)}
+                  className="p-2 bg-[#BAE5FD] border border-[#017EC2] text-white rounded-full hover:bg-[#7CD1FD] transition-colors"
+                  title="Buscar"
+                >
+                  <MagnifyingGlassIcon className="h-5 w-5 text-[#017EC2]" />
+                </button>
+              )}
+
+                {showSearch && (
+                  <input
+                    type="text"
+                    placeholder="Buscar producto..."
+                    value={searchTerm}
+                    onChange={e => setSearchTerm(e.target.value)}
+                    onKeyDown={async (e) => {
+                      if (e.key === 'Enter') {
+                        const results = await searchProductsByName(searchTerm);
+                        setFilteredProducts(results);
+                        setSelectedCultivo(null); // opcional: limpia filtro actual
+                      }
+                    }}
+                    className="border border-gray-300 rounded px-3 py-1"
+                    style={{ boxShadow: 'inset 2px 2px 6px rgba(0, 0, 0, 0.3)' }}
+                  />
+                )}
+              </div>
+
+
 
               {filteredProducts.length === 0 ? (
                 <div className="text-center py-8 text-3xl font-bold">
@@ -287,6 +369,21 @@ const CategoryPage: React.FC = () => {
             </>
           )}
         </div>
+        
+      </section>
+
+      <section className="py-12">
+                {hasMore && filteredProducts.length >= 9 &&  (
+          <div className="flex justify-center mt-8">
+            <button
+              onClick={loadMore}
+              className="px-6 py-2 bg-primary text-white rounded hover:bg-primary-dark transition-colors"
+            >
+              {loading ? 'Cargando...' : 'Cargar más'}
+            </button>
+          </div>
+        )}
+
       </section>
     </div>
   );
