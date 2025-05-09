@@ -23,7 +23,7 @@ const AuthPage: React.FC = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-4">Iniciar Sesión</h1>
+      <h1 className="text-2xl font-bold mb-4">Acceder</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-sm font-medium">Correo Electrónico</label>
@@ -49,7 +49,7 @@ const AuthPage: React.FC = () => {
           type="submit"
           className="px-4 py-2 bg-primary text-white rounded hover:bg-primary-dark"
         >
-          Iniciar Sesión
+          Acceder
         </button>
       </form>
     </div>

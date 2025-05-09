@@ -4,6 +4,8 @@ import { formatDate } from '../../utils/helpers';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { Accordion, AccordionSummary, AccordionDetails, Typography } from '@mui/material';
 import { ArrowLeftIcon } from '@heroicons/react/24/solid';
+import { Link } from 'react-router-dom';
+
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
@@ -120,14 +122,16 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
     <div className="bg-[#F5F6F5] text-surface-dark p-6 rounded-lg shadow-sm">
       <h2 className="text-xl font-semibold mb-4 text-center">Cultivos</h2>
       <div className="flex flex-wrap justify-center gap-3">
-        {product.cultivos.map((cultivo, index) => (
-          <span
-            key={index}
-            className="inline-block bg-secondary-dark text-surface-dark text-sm font-semibold rounded-full px-4 py-1 shadow-sm"
-          >
-            {cultivo}
-          </span>
-        ))}
+      {product.cultivos.map((cultivo, index) => (
+  <Link
+    to={`/cultivo/${cultivo}`}
+    key={index}
+    className="inline-block bg-secondary-dark text-surface-dark text-sm font-semibold rounded-full px-4 py-1 shadow-sm hover:underline"
+  >
+    {cultivo}
+  </Link>
+))}
+
       </div>
     </div>
   </div>

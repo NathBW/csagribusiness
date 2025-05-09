@@ -14,6 +14,7 @@ import ProductPage from './pages/ProductPage';
 import AdminPage from './pages/AdminPage';
 import NotFoundPage from './pages/NotFoundPage';
 import AuthPage from './components/layout/AuthPage';
+import CultivoPage from './pages/CultivoPage';
 import ProtectedRoute from './components/ui/ProtectedRoute';
 import EditProduct from './pages/EditProduct';
 import EditProductContainer from './components/product/EditProductContainer'; // Importamos el contenedor
@@ -34,6 +35,7 @@ function App() {
             <Route path="/admin" element={ <ProtectedRoute> <AdminPage /> </ProtectedRoute>} />
             <Route path="/admin/editar/:productId" element={<ProtectedRoute><EditProductContainer /></ProtectedRoute>} /> {/* Usamos el contenedor */}
             <Route path="/auth" element={<AuthPage />} /> {/* Nueva ruta */}
+            <Route path="/cultivo/:cultivoId" element={<CultivoPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </main>
