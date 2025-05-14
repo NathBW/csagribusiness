@@ -46,8 +46,19 @@ export const getCategoryDisplayName = (categoryId: string): string => {
     'plaguicidas': 'Plaguicidas',
     'fertilizantes': 'Fertilizantes',
     'coadyuvantes': 'Coadyuvantes',
-    'insumos': 'Insumos'
+    'bioinsumos': 'Bioinsumos'
   };
   
   return categories[categoryId] || categoryId;
 };
+
+
+export function normalize(nombre: string): string {
+  return nombre
+    .normalize('NFD')      // normaliza caracteres acentuados
+    .replace(/[\u0300-\u036f]/g, '')        // más limpieza
+    .toLowerCase()
+    .replace(/\s+/g, '-')                   // espacios a guiones
+    .replace(/[^\w\-]/g, '')                // quita símbolos raros
+    .trim();
+}

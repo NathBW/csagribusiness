@@ -10,7 +10,7 @@ const menuItems = [
   { label: 'Fertilizantes', path: '/categoria/fertilizantes' },
   { label: 'Plaguicidas', path: '/categoria/plaguicidas' },
   { label: 'Coadyuvantes', path: '/categoria/coadyuvantes' },
-  { label: 'Insumos', path: '/categoria/insumos' },
+  { label: 'Bioinsumos', path: '/categoria/bioinsumos' },
 ];
 
 const Navbar: React.FC = () => {
@@ -27,7 +27,7 @@ const Navbar: React.FC = () => {
     <header className="bg-primary shadow-md sticky top-0 z-50">
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
         <Link to="/" className="flex items-center">
-          <Logo className="h-10 md:h-12" />
+          <Logo className="h-16 md:h-20" />
         </Link>
 
         <nav className="hidden md:flex items-center space-x-6">

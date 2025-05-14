@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { createProduct, getProductById } from '../services/productService';
-import { uploadFileToCloudinary } from '../data/uploadFile'
-import { XMarkIcon } from '@heroicons/react/24/solid';
+import React, { useState, useEffect } from 'react'; // Importa React y hooks
+import { createProduct, getProductById } from '../services/productService'; // Importa las funciones para crear y obtener productos de firebase
+import { uploadFileToCloudinary } from '../data/uploadFile' // Importa la función para subir archivos a Cloudinary para imágenes
+import { XMarkIcon } from '@heroicons/react/24/solid'; // Importa el icono de cierre de Heroicons
 
 
 const AdminPage: React.FC = () => {
-  const [product, setProduct] = useState({
-    id: '', // ID del producto, se generará automáticamente
+  const [product, setProduct] = useState({ // Estado para manejar el producto con sus propiedades
+    id: '',
     nombre: '',
     descripcion: '',
     compra: '',
-    categoria: 'insumos',
+    categoria: 'bioinsumos',
     imagen: '',
     fichaTecnica: '',
     hojaSeguridad: '',
@@ -37,16 +37,18 @@ const AdminPage: React.FC = () => {
     },
   });
 
-  const [isEditing, setIsEditing] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [successMessage, setSuccessMessage] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+  // Estados
+  const [isEditing, setIsEditing] = useState(false); // Estado para manejar el modo de edición
+  const [loading, setLoading] = useState(false); // Estado para manejar la carga
+  const [successMessage, setSuccessMessage] = useState(''); // Estado para manejar mensajes de éxito
+  const [errorMessage, setErrorMessage] = useState(''); // Estado para manejar mensajes de error
 
+  // Efecto para cargar el producto si estamos en modo edición
   useEffect(() => {
     const fetchProduct = async () => {
       if (isEditing && product.id) {
         try {
-          const fetchedProduct = await getProductById(product.id);
+          const fetchedProduct = await getProductById(product.id); // Obtiene el producto por ID
           if (fetchedProduct) {
             setProduct(fetchedProduct);
           }
@@ -56,10 +58,11 @@ const AdminPage: React.FC = () => {
       }
     };
   
+    // Llama a la función para obtener el producto al cargar el componente
     fetchProduct();
-  }, [isEditing, product.id]);
+  }, [isEditing, product.id]); // Dependencias del efecto
   
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => { // Maneja los cambios en los campos de entrada
     const { name, value } = e.target;
   
     // Manejo de campos anidados
@@ -81,6 +84,7 @@ const AdminPage: React.FC = () => {
     }
   };
 
+  // Maneja el envío del formulario
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -98,7 +102,7 @@ const AdminPage: React.FC = () => {
       const productToSend = {
         ...product,
         id: product.nombre.trim().toLowerCase().replace(/\s+/g, '-'), // Convierte el nombre a un formato de ID (ejemplo: "nombre-del-producto")
-        categoria: product.categoria as 'insumos' | 'plaguicidas' | 'fertilizantes' | 'coadyuvantes', // Asegura el tipo
+        categoria: product.categoria as 'bioinsumos' | 'plaguicidas' | 'fertilizantes' | 'coadyuvantes', // Asegura el tipo
         ultimaActualizacion: new Date(), // Establece la fecha actual
       };
   
@@ -110,7 +114,7 @@ const AdminPage: React.FC = () => {
         nombre: '',
         descripcion: '',
         compra: '',
-        categoria: 'insumos',
+        categoria: 'bioinsumos',
         imagen: '',
         fichaTecnica: '',
         hojaSeguridad: '',
@@ -152,41 +156,12 @@ const AdminPage: React.FC = () => {
     }
   };
 
-  const handleFichaTecnicaUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-  
-    try {
-      const url = await uploadFileToCloudinary(file); // ¡Funciona con PDF también!
-      setProduct((prev) => ({ ...prev, fichaTecnica: url }));
-    } catch (err) {
-      console.error('Error subiendo archivo:', err);
-    }
-  };
 
-  const handleHojaSeguridadUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-  
-    try {
-      const url = await uploadFileToCloudinary(file); // ¡Funciona con PDF también!
-      setProduct((prev) => ({ ...prev, hojaSeguridad: url }));
-    } catch (err) {
-      console.error('Error subiendo archivo:', err);
-    }
-  };
 
   
 
   return (
     <div className="container mx-auto px-4 py-12">
-       {/*<h1 className="text-3xl font-bold mb-8">{isEditing ? 'Editar Producto' : 'Crear Producto'}</h1>
-      <button
-        onClick={() => setIsEditing((prev) => !prev)}
-        className="mb-4 px-4 py-2 bg-gray-500 text-white rounded"
-      >
-        {isEditing ? 'Cambiar a Crear Producto' : 'Cambiar a Editar Producto'}
-      </button>*/}
       <h1 className="text-3xl font-bold mb-8">Crear Producto</h1>
       {successMessage && <p className="text-green-600 mb-4">{successMessage}</p>}
       {errorMessage && <p className="text-red-600 mb-4">{errorMessage}</p>}
@@ -225,7 +200,7 @@ const AdminPage: React.FC = () => {
             onChange={handleChange}
             className="w-full border rounded px-3 py-2"
           >
-            <option value="insumos">Insumos</option>
+            <option value="bioinsumos">Bioinsumos</option>
             <option value="plaguicidas">Plaguicidas</option>
             <option value="fertilizantes">Fertilizantes</option>
             <option value="coadyuvantes">Coadyuvantes</option>

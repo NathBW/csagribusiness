@@ -6,6 +6,8 @@ import { useAuth } from '../layout/AuthContext';
 import { deleteProduct } from '../../services/productService';
 import { useNavigate } from 'react-router-dom';
 import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/solid';
+import { incrementarConteoFichaTecnica } from '../../services/contadorService';
+
 
 
 
@@ -77,6 +79,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             target="_blank"
             rel="noopener noreferrer"
             className="text-link hover:underline flex items-center"
+            onClick={() => incrementarConteoFichaTecnica(product.id)}
           >
             producto_fichatecnica.pdf
             {/*<svg

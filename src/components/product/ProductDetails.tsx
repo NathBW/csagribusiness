@@ -1,10 +1,11 @@
 import React from 'react';
 import { Producto } from '../../types';
 import { formatDate } from '../../utils/helpers';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { Accordion, AccordionSummary, AccordionDetails, Typography } from '@mui/material';
 import { ArrowLeftIcon } from '@heroicons/react/24/solid';
 import { Link } from 'react-router-dom';
+import { incrementarConteoFichaTecnica } from '../../services/contadorService';
+
 
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -88,6 +89,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
             target="_blank"
             rel="noopener noreferrer"
             className="text-link hover:underline flex items-center"
+            onClick={() => incrementarConteoFichaTecnica(product.id)}
           >
             producto_fichatecnica.pdf
             {/*<svg

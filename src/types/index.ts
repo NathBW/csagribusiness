@@ -30,7 +30,7 @@ export interface Producto {
   nombre: string;
   descripcion: string;
   imagen: string;
-  categoria: 'plaguicidas' | 'fertilizantes' | 'coadyuvantes' | 'insumos';
+  categoria: 'plaguicidas' | 'fertilizantes' | 'coadyuvantes' | 'bioinsumos';
   ultimaActualizacion: Date | string | Timestamp;
   cultivos: Cultivo[];
   fichaTecnica: string;

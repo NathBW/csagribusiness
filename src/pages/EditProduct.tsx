@@ -1,31 +1,29 @@
-import React, { useState } from 'react';
-import { Producto } from '../types/index'; // Asegúrate de que la ruta sea correcta
-import { formatDate } from '../utils/helpers';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import { updateProduct } from '../services/productService'; // Asegúrate de tener esta función definida
-import { XMarkIcon, ArrowLeftIcon } from '@heroicons/react/24/solid';
-import { uploadFileToCloudinary } from '../data/uploadFile'
+import React, { useState } from 'react'; // Importa React y useState
+import { Producto } from '../types/index'; // Importa la base de datos de productos creada desde el archivo index.ts
+import { formatDate } from '../utils/helpers'; // Importa la función de formateo de fecha de helpers que ayuda a formatear la fecha
+import { updateProduct } from '../services/productService'; // Importa la función de actualización de productos para actualizar los productos a firebase
+import { XMarkIcon, ArrowLeftIcon } from '@heroicons/react/24/solid'; // Importa los iconos de Heroicons para la X (borrar) y para volver atrás
+import { uploadFileToCloudinary } from '../data/uploadFile' // Importa la función de carga de archivos a Cloudinary para subir imágenes
 
 
-interface ProductDetailsProps {
-  product: Producto;
+interface ProductDetailsProps { // Se define la interfaz para las propiedades del componente
+  product: Producto; // Propiedad de producto que es de tipo Producto para recibir los datos del producto
 }
 
 
-const EditProduct: React.FC<ProductDetailsProps> = ({ product }) => {
-  const [formData, setFormData] = useState(product);
+const EditProduct: React.FC<ProductDetailsProps> = ({ product }) => { // Se define el componente funcional EditProduct
+  const [formData, setFormData] = useState(product); // Se inicializa el estado del formulario con los datos del producto
 
-  // Aseguramos que las claves de 'caracteristicas' sean válidas
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => { // Función para manejar los cambios en los inputs
     const { name, value } = e.target;
 
-    // Verificamos si 'name' pertenece a 'caracteristicas' antes de modificarlo
-    if (name in formData.caracteristicas) {
-      setFormData(prev => ({
+
+    if (name in formData.caracteristicas) {  // Verificamos si 'name' pertenece a 'caracteristicas' antes de modificarlo
+      setFormData(prev => ({ // Actualizamos el estado del formulario
         ...prev,
         caracteristicas: {
-          ...prev.caracteristicas,
-          [name]: value, // Aquí TypeScript ahora no marca error
+          ...prev.caracteristicas, // Mantenemos las características existentes
+          [name]: value, // Actualizamos la característica específica
         }
       }));
     } else {
@@ -37,21 +35,21 @@ const EditProduct: React.FC<ProductDetailsProps> = ({ product }) => {
     }
   };
 
-  const handleSave = async () => {
+  const handleSave = async () => { // Función para guardar los cambios
     try {
-      await updateProduct(product.id, { ...formData, ultimaActualizacion: new Date() });
+      await updateProduct(product.id, { ...formData, ultimaActualizacion: new Date() }); // Actualizamos el producto en Firebase
       alert('Producto actualizado correctamente');
     } catch (error) {
       console.error('Error al actualizar:', error);
     }
   };
 
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => { // Función para manejar la carga de imágenes
+    const file = e.target.files?.[0]; // Obtenemos el primer archivo del input
     if (!file) return;
   
     try {
-      const url = await uploadFileToCloudinary(file);
+      const url = await uploadFileToCloudinary(file); // Subimos la imagen a Cloudinary
       setFormData((prev) => ({ ...prev, imagen: url }));
     } catch (err) {
       console.error('Error subiendo imagen:', err);
@@ -61,6 +59,7 @@ const EditProduct: React.FC<ProductDetailsProps> = ({ product }) => {
   
   return (
     <div className="space-y-8">
+
       {/* Hero Section */}
       <div className="bg-primary text-white py-12 px-4">
         <div className="container mx-auto flex flex-col md:flex-row items-center">
@@ -74,13 +73,6 @@ const EditProduct: React.FC<ProductDetailsProps> = ({ product }) => {
           </button>
 
           <div className="flex-1 flex flex-col md:flex-row items-center md:space-x-12">
-            {/*<div className="w-full md:w-1/3 mb-6 md:mb-0">
-              <img
-                src={formData.imagen}
-                alt={formData.nombre}
-                className="w-full h-64 object-contain bg-white rounded-lg p-4"
-              />
-            </div>*/}
             <div className="w-full md:w-1/3 mb-6 md:mb-0">
               <img
                 src={formData.imagen}
@@ -127,7 +119,8 @@ const EditProduct: React.FC<ProductDetailsProps> = ({ product }) => {
       </div>
 
       <div className="mx-auto max-w-screen-lg px-4 grid grid-cols-1 md:grid-cols-3 gap-x-12 gap-y-6 pt-8">
-        {/* Left Column */}
+
+        {/* Columna izquierda*/}
         <div className="md:col-span-1 space-y-6">
           <p className="text-sm text-surface-dark">
             Última Actualización: {formatDate(formData.ultimaActualizacion)}
@@ -216,8 +209,9 @@ const EditProduct: React.FC<ProductDetailsProps> = ({ product }) => {
 
         </div>
 
-        {/* Right Column */}
+        {/* Columna derecha */}
         <div className="md:col-span-2">
+
           {/* Contenedor principal */}
           <div className="bg-[#F5F6F5] p-6 rounded-lg shadow-sm mb-6">
             <h2 className="text-center text-2xl font-bold text-surface-dark mb-6">Características</h2>
@@ -226,7 +220,7 @@ const EditProduct: React.FC<ProductDetailsProps> = ({ product }) => {
             <div className="bg-primary text-surface-white p-6 rounded-lg space-y-3 text-sm">
               <h3 className="text-center text-lg font-bold mb-4">Composición</h3>
 
-              <div>
+              <div> {/* Caja verde e Ingredientes Activos */}
                 <span className="font-semibold">Ingredientes Activos:</span>
                 <input
                   type="text"
@@ -238,7 +232,8 @@ const EditProduct: React.FC<ProductDetailsProps> = ({ product }) => {
 
                 />
               </div>
-              <div>
+
+              <div> {/* Caja verde y Tipo de Formulación */}
                 <span className="font-semibold">Tipo de Formulación:</span>
                 <input
                   type="text"
@@ -251,7 +246,7 @@ const EditProduct: React.FC<ProductDetailsProps> = ({ product }) => {
                 />
               </div>
 
-              <div>
+              <div> {/* Caja verde y Clasificación Tóxicologica */}
                 <span className="font-semibold">Clasificación Tóxicologica</span>
                 <input
                   type="text"
@@ -264,7 +259,7 @@ const EditProduct: React.FC<ProductDetailsProps> = ({ product }) => {
                 />
               </div>
 
-              <div>
+              <div> {/* Caja verde y Presentación */}
                 <span className="font-semibold">Presentación</span>
                 <input
                   type="text"
@@ -279,11 +274,11 @@ const EditProduct: React.FC<ProductDetailsProps> = ({ product }) => {
 
             </div>
 
-            <div className="mt-4">
+            <div className="mt-4"> {/* Caja gris y Registro Nacional */}
               <span className="font-semibold">Registro Nacional</span>
               <input
                 type="text"
-                name="registroNacional"  // Corregido el nombre aquí
+                name="registroNacional"
                 value={formData.registroNacional}
                 onChange={handleChange}
                 className="text-black/90 w-full border border-gray-300 p-2 rounded"
@@ -300,14 +295,14 @@ const EditProduct: React.FC<ProductDetailsProps> = ({ product }) => {
       
       <div className="space-y-8 bg-primary">
         <div className="container mx-auto px-4 p-8 ">
-        <h2 className="text-center text-2xl font-bold text-surface-white mb-6">Instrucciones de Uso</h2>
-                <div>
+          <h2 className="text-center text-2xl font-bold text-surface-white mb-6">Instrucciones de Uso</h2>
+                <div> {/* Sección de instrucciones de uso */}
                   <span className="font-semibold text-surface-white">Modo de Uso</span>
                   <input
                     type="text"
                     name="modoUso"
                     value={formData.instruccionesUso.modoUso}
-                    onChange={(e) => {
+                    onChange={(e) => { // Actualizamos el modo de uso
                       setFormData((prev) => ({
                         ...prev,
                         instruccionesUso: {
@@ -318,15 +313,13 @@ const EditProduct: React.FC<ProductDetailsProps> = ({ product }) => {
                     }}
                     className="text-black/90 w-full border border-gray-300 p-2 rounded mb-4"
                     style={{ boxShadow: 'inset 2px 2px 6px rgba(0, 0, 0, 0.3)' }}
-
                   />
                 </div>
 
-                <div>
+                <div> {/* Sección de cuadro de uso */}
                     <label className="semibold text-surface-white">Cuadro de Uso</label>
-
                     {formData.instruccionesUso?.cuadroUso?.map((fila, index) => (
-                      
+                      // Se mapea cada fila del cuadro de uso
                       <div key={index} className="grid grid-cols-1 md:grid-cols-6 gap-2 mb-4"
                       >
                         
@@ -336,7 +329,7 @@ const EditProduct: React.FC<ProductDetailsProps> = ({ product }) => {
                             type="text"
                             placeholder={campo}
                             value={(fila as any)[campo]}
-                            onChange={(e) => {
+                            onChange={(e) => { // Actualizamos el campo correspondiente
                               const updated = [...(formData.instruccionesUso?.cuadroUso || [])];
                               updated[index] = { ...updated[index], [campo]: e.target.value };
                               setFormData(prev => ({
@@ -349,16 +342,14 @@ const EditProduct: React.FC<ProductDetailsProps> = ({ product }) => {
                             }}
                             className="border rounded px-2 py-1"
                             style={{ boxShadow: 'inset 2px 2px 6px rgba(0, 0, 0, 0.3)' }}
-
                           />
-                          
                         ))}
                         
                         <button
                           type="button"
                           onClick={() => {
                             const updated = formData.instruccionesUso?.cuadroUso?.filter((_, i) => i !== index) || [];
-                            setFormData(prev => ({
+                            setFormData(prev => ({ // Actualizamos el estado del formulario
                               ...prev,
                               instruccionesUso: {
                                 ...prev.instruccionesUso,
@@ -378,14 +369,14 @@ const EditProduct: React.FC<ProductDetailsProps> = ({ product }) => {
                     <button
                       type="button"
                       onClick={() => {
-                        const nuevaFila = {
-                          cultivo: '',
-                          dosisRecomendada: '',
-                          periodoCarencia: '',
-                          periodoReentrada: '',
-                          phi: '',
+                      const nuevaFila = {
+                        cultivo: '',
+                        dosisRecomendada: '',
+                        periodoCarencia: '',
+                        periodoReentrada: '',
+                        phi: '',
                         };
-                        setFormData(prev => ({
+                        setFormData(prev => ({ // Actualizamos el estado del formulario
                           ...prev,
                           instruccionesUso: {
                             ...prev.instruccionesUso,
@@ -399,15 +390,14 @@ const EditProduct: React.FC<ProductDetailsProps> = ({ product }) => {
                     </button>
                 </div>
 
-
-                <div>
+                <div> {/* Sección de preparación */}
                   <span className="font-semibold text-surface-white">Preparación</span>
                   <input
                     type="text"
                     name="preparacion"
                     value={formData.instruccionesUso.preparacion}
                     onChange={(e) => {
-                      setFormData((prev) => ({
+                      setFormData((prev) => ({ // Actualizamos la preparación
                         ...prev,
                         instruccionesUso: {
                           ...prev.instruccionesUso,
@@ -421,15 +411,14 @@ const EditProduct: React.FC<ProductDetailsProps> = ({ product }) => {
                   />
                 </div>
 
-
-                <div>
+                <div> {/* Sección de precaución y advertencia */}
                   <span className="font-semibold text-surface-white">Precaución y Advertencia</span>
                   <input
                     type="text"
                     name="precaucionAdvertencia"
                     value={formData.instruccionesUso.precaucionAdvertencia}
                     onChange={(e) => {
-                      setFormData((prev) => ({
+                      setFormData((prev) => ({ // Actualizamos la precaución y advertencia
                         ...prev,
                         instruccionesUso: {
                           ...prev.instruccionesUso,
@@ -442,7 +431,6 @@ const EditProduct: React.FC<ProductDetailsProps> = ({ product }) => {
 
                   />
                 </div>
-
 
                 <div className="pt-4">
                   <button

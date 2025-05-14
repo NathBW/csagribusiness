@@ -2,6 +2,7 @@ import { collection, getDocs, doc, getDoc, setDoc, query, where, addDoc, updateD
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { db, storage } from '../firebase/config';
 import { Producto } from '../types';
+import { normalize } from '../utils/helpers'; // importa la función
 
 
 // Collection reference
@@ -95,17 +96,70 @@ export const getPaginatedProducts = async (
   return { products, lastVisible };
 };
 
-// Search products by name
-export const searchProductsByName = async (searchTerm: string): Promise<Producto[]> => {
-  const q = query(productosRef, where('nombre', '>=', searchTerm), where('nombre', '<=', searchTerm + '\uf8ff'));
-  const snapshot = await getDocs(q);
+// Get paginated products by category
+// productService.ts
+export const getPaginatedProductsByCategory = async (
+  category: string,
+  lastDoc: QueryDocumentSnapshot | null = null,
+  pageSize: number = 8
+): Promise<{ products: Producto[]; lastVisible: QueryDocumentSnapshot | null }> => {
+  let q = query(
+    productosRef,
+    where('categoria', '==', category),
+    orderBy('nombre'),
+    limit(pageSize)
+  );
 
+  if (lastDoc) {
+    q = query(
+      productosRef,
+      where('categoria', '==', category),
+      orderBy('nombre'),
+      startAfter(lastDoc),
+      limit(pageSize)
+    );
+  }
+
+  const snapshot = await getDocs(q);
+  const products = snapshot.docs.map(doc => ({
+    id: doc.id,
+    ...doc.data(),
+    ultimaActualizacion: doc.data().ultimaActualizacion?.toDate() || new Date(),
+  })) as Producto[];
+
+  const lastVisible = snapshot.docs[snapshot.docs.length - 1] || null;
+
+  return { products, lastVisible };
+};
+
+
+// Search products by name
+//export const searchProductsByName = async (searchTerm: string): Promise<Producto[]> => {
+//  const q = query(productosRef, where('nombre', '>=', searchTerm), where('nombre', '<=', searchTerm + '\uf8ff'));
+//  const snapshot = await getDocs(q);
+
+//  return snapshot.docs.map(doc => ({
+//    id: doc.id,
+//    ...doc.data() as Omit<Producto, 'id'>,
+//    ultimaActualizacion: doc.data().ultimaActualizacion?.toDate() || new Date(),
+//  }));
+//};
+export const searchProductsByName = async (searchTerm: string): Promise<Producto[]> => {
+  const normalized = normalize(searchTerm);
+  const q = query(
+    productosRef,
+    where('nombreBusqueda', '>=', normalized),
+    where('nombreBusqueda', '<=', normalized + '\uf8ff')
+  );
+  const snapshot = await getDocs(q);
   return snapshot.docs.map(doc => ({
     id: doc.id,
     ...doc.data() as Omit<Producto, 'id'>,
-    ultimaActualizacion: doc.data().ultimaActualizacion?.toDate() || new Date(),
+    ultimaActualizacion: doc.data().ultimaActualizacion?.toDate() || new Date()
   }));
 };
+
+
 
 
 // Upload an image and get its URL
@@ -127,20 +181,36 @@ export const uploadProductDocument = async (
 };
 
 // Create a new product
+export const createProduct = async (product: Omit<Producto, 'id'>): Promise<string> => {
+  const nombreNormalizado = normalize(product.nombre);
+  const docRef = doc(db, 'productos', nombreNormalizado);
 
-export const createProduct = async (product: Producto): Promise<string> => {
-  const docRef = doc(db, 'productos', product.id); // Usa el ID personalizado
   await setDoc(docRef, {
     ...product,
+    id: nombreNormalizado, // ← agrega el id dentro del documento
     ultimaActualizacion: new Date(),
+    nombreBusqueda: nombreNormalizado
   });
-  return product.id;
+
+  return nombreNormalizado;
 };
+
+
+//export const createProduct = async (product: Producto): Promise<string> => {
+//  const docRef = doc(db, 'productos', product.id); // Usa el ID personalizado
+//  await setDoc(docRef, {
+//    ...product,
+//    ultimaActualizacion: new Date(),
+//  });
+//  return product.id;
+//};
+
+
 //export const createProduct = async (product: Omit<Producto, 'id'>): Promise<string> => {
 //  const defaultValues = {
 //    descripcion: 'Descripción por defecto',
 //    imagen: '',
-//    categoria: 'insumos',
+//    categoria: 'bioinsumos',
 //    ultimaActualizacion: new Date(),
 //    cultivos: [],
 //    fichaTecnica: '',
@@ -172,13 +242,28 @@ export const createProduct = async (product: Producto): Promise<string> => {
 
 
 // Update a product
-export const updateProduct = async (id: string, product: Partial<Omit<Producto, 'id'>>): Promise<void> => {
+//export const updateProduct = async (id: string, product: Partial<Omit<Producto, 'id'>>): Promise<void> => {
+//  const docRef = doc(db, 'productos', id);
+//  await updateDoc(docRef, {
+//    ...product,
+//    ultimaActualizacion: new Date(),
+//  ...(product.nombre && { nombreBusqueda: normalize(product.nombre) })
+//  });
+//};
+export const updateProduct = async (
+  id: string,
+  product: Partial<Omit<Producto, 'id'>>
+): Promise<void> => {
   const docRef = doc(db, 'productos', id);
+
   await updateDoc(docRef, {
     ...product,
-    ultimaActualizacion: new Date()
+    ultimaActualizacion: new Date(),
+    ...(product.nombre && { nombreBusqueda: normalize(product.nombre) })
   });
 };
+
+
 
 // Delete a product
 export const deleteProduct = async (id: string): Promise<void> => {

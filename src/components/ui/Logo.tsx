@@ -18,7 +18,7 @@ const Logo: React.FC<LogoProps> = ({ className = '' }) => {
       <img
         src="/src/assets/images/Logo_CS.png"
         alt="Logo CS"
-        className="h-10 mr-2"
+        className="h-14 mr-2"
       />
     </div>
   );

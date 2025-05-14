@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 //import './firebase/config'; // Importa el archivo config.ts para que se ejecute el script seed
 
 
+
 // Layout components
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
