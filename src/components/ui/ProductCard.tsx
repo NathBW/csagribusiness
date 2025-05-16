@@ -33,7 +33,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   return (
     
     <div
-      className="block bg-surface-white transition-colors rounded-2xl overflow-hidden shadow-lg w-full max-w-[280px] mx-auto hover:scale-[1.02] hover:shadow-card-hover hover:bg-[#AEB2AF] duration-300"
+      className="block bg-surface-white transition-colors rounded-2xl overflow-hidden shadow-[0px_5px_5px_rgba(0,0,0,0.2)] w-full max-w-[280px] mx-auto hover:scale-[1.02] hover:shadow-card-hover hover:bg-[#AEB2AF] duration-300"
       style={{
         backgroundImage: `url(${fondoCategoria})`,
         backgroundSize: 'cover',

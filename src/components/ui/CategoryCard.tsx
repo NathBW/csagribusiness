@@ -15,7 +15,7 @@ const CategoryCard: React.FC<CategoryCardProps> = ({ category }) => {
       className="group block overflow-hidden rounded-lg transition-all duration-300 hover:scale-[1.02]"
     >
       <div className="relative">
-        <div className="bg-secondary aspect-square flex items-center justify-center hover:bg-[#7CD1FD] transition-colors duration-300">
+        <div className="bg-secondary shadow-[inset_0_-5px_8px_rgba(0,0,0,0.2)] aspect-square flex items-center justify-center hover:bg-[#7CD1FD] transition-colors duration-300">
           <img 
             src={category.imagen} 
             alt={category.nombre} 

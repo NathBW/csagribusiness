@@ -31,23 +31,6 @@ export const getProductsByCategory = async (category: string): Promise<Producto[
 
 
 
-// Get a single product by ID
-{/*export const getProductById = async (id: string): Promise<Producto | null> => {
-  try {
-    const docRef = doc(db, 'productos', id);
-    const docSnap = await getDoc(docRef);
-
-    if (docSnap.exists()) {
-      return { id: docSnap.id, ...docSnap.data() } as Producto;
-    } else {
-      console.error('No se encontró el producto con ID:', id);
-      return null;
-    }
-  } catch (error) {
-    console.error('Error al obtener el producto:', error);
-    throw error;
-  }
-};*/}
 
 export const getProductById = async (id: string): Promise<Producto | null> => {
   try {
@@ -133,17 +116,7 @@ export const getPaginatedProductsByCategory = async (
 };
 
 
-// Search products by name
-//export const searchProductsByName = async (searchTerm: string): Promise<Producto[]> => {
-//  const q = query(productosRef, where('nombre', '>=', searchTerm), where('nombre', '<=', searchTerm + '\uf8ff'));
-//  const snapshot = await getDocs(q);
 
-//  return snapshot.docs.map(doc => ({
-//    id: doc.id,
-//    ...doc.data() as Omit<Producto, 'id'>,
-//    ultimaActualizacion: doc.data().ultimaActualizacion?.toDate() || new Date(),
-//  }));
-//};
 export const searchProductsByName = async (searchTerm: string): Promise<Producto[]> => {
   const normalized = normalize(searchTerm);
   const q = query(
@@ -196,60 +169,7 @@ export const createProduct = async (product: Omit<Producto, 'id'>): Promise<stri
 };
 
 
-//export const createProduct = async (product: Producto): Promise<string> => {
-//  const docRef = doc(db, 'productos', product.id); // Usa el ID personalizado
-//  await setDoc(docRef, {
-//    ...product,
-//    ultimaActualizacion: new Date(),
-//  });
-//  return product.id;
-//};
 
-
-//export const createProduct = async (product: Omit<Producto, 'id'>): Promise<string> => {
-//  const defaultValues = {
-//    descripcion: 'Descripción por defecto',
-//    imagen: '',
-//    categoria: 'bioinsumos',
-//    ultimaActualizacion: new Date(),
-//    cultivos: [],
-//    fichaTecnica: '',
-//    hojaSeguridad: '',
-//    caracteristicas: {
-//      composicion: '',
-//      ingredientesActivos: '',
-//      tipoFormulacion: '',
-//      clasificacionToxicologica: '',
-//      presentacion: '',
-//    },
-//    registroNacional: '',
-//    instruccionesUso: {
-//      modoUso: '',
-//      preparacion: '',
-//      precaucionAdvertencia: '',
-//      cuadroUso: [],
-//    },
-//  };
-
-//  const docRef = await addDoc(productosRef, {
-//    ...defaultValues, // Aplica valores por defecto
-//    ...product, // Sobrescribe con los valores proporcionados
-//    ultimaActualizacion: new Date(), // Actualiza la fecha
-//  });
-
-//  return docRef.id;
-//};
-
-
-// Update a product
-//export const updateProduct = async (id: string, product: Partial<Omit<Producto, 'id'>>): Promise<void> => {
-//  const docRef = doc(db, 'productos', id);
-//  await updateDoc(docRef, {
-//    ...product,
-//    ultimaActualizacion: new Date(),
-//  ...(product.nombre && { nombreBusqueda: normalize(product.nombre) })
-//  });
-//};
 export const updateProduct = async (
   id: string,
   product: Partial<Omit<Producto, 'id'>>
