@@ -1,4 +1,5 @@
 import React from 'react';
+import logo from '../../assets/images/Logo_CS.png'
 //import { Leaf } from 'lucide-react';
 
 interface LogoProps {
@@ -16,7 +17,7 @@ const Logo: React.FC<LogoProps> = ({ className = '' }) => {
       </div>*/}
       {/* Imagen del logo */}
       <img
-        src="/src/assets/images/Logo_CS.png"
+        src= {logo}
         alt="Logo CS"
         className="h-14 mr-2"
       />

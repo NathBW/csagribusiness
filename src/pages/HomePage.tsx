@@ -2,6 +2,10 @@ import React from 'react'; // Importa React
 import CategoryCard from '../components/ui/CategoryCard'; // Importa la tarjeta de categoría
 import { CategoriaInfo } from '../types'; // Importa el tipo la información de la categoría
 import HeroBanner from '../components/layout/Banner'; // Importa el banner de héroe
+import ferticate from '../assets/images/category/Cfertilizante.png'
+import plaguicar from '../assets/images/category/Cplaguicidas.png'
+import coadyucar from '../assets/images/category/CCoadyuvantes.png'
+import bioinsucar from '../assets/images/category/CInsumos.png'
 
 // Define la información de las categorías
 const categories: CategoriaInfo[] = [
@@ -9,28 +13,28 @@ const categories: CategoriaInfo[] = [
     id: 'fertilizantes',
     nombre: 'Fertilizante',
     descripcion: 'Nutrientes esenciales para sus cultivos.',
-    imagen: './src/assets/images/category/Cfertilizante.png',
+    imagen: ferticate,
     path: '/categoria/fertilizantes'
   },
   {
     id: 'plaguicidas',
     nombre: 'Plaguicidas',
     descripcion: 'Soluciones para el control de plagas.',
-    imagen: './src/assets/images/category/Cplaguicidas.png',
+    imagen: plaguicar,
     path: '/categoria/plaguicidas'
   },
   {
     id: 'coadyuvantes',
     nombre: 'Coadyuvantes',
     descripcion: 'Mejore la eficacia de sus aplicaciones.',
-    imagen: './src/assets/images/category/CCoadyuvantes.png',
+    imagen: coadyucar,
     path: '/categoria/coadyuvantes'
   },
   {
     id: 'bioinsumos',
     nombre: 'Bioinsumos',
     descripcion: 'Sistemas de monitoreo para plantas.',
-    imagen: './src/assets/images/category/CInsumos.png',
+    imagen: bioinsucar,
     path: '/categoria/bioinsumos'
   }
   // Se pueden agregar más categorías aquí

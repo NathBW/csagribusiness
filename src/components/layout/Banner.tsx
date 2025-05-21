@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import banneruno from '../../assets/images/banner/banner1.png';
+import bannerdos from '../../assets/images/banner/banner2.png';
+import banner3 from '../../assets/images/banner/banner3.png';
+import banner4 from '../../assets/images/banner/banner4.png';
 
 const HeroBanner: React.FC = () => {
-  const bannerImages = [
-    '../../src/assets/images/banner/banner1.png',
-    '../../src/assets/images/banner/banner2.png',
-    '../../src/assets/images/banner/banner3.png',
-    '../../src/assets/images/banner/banner4.png',
-  ];
+  const bannerImages = [ banneruno,bannerdos,banner3,banner4];
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
