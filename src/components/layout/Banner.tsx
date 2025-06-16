@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import banneruno from '../../assets/images/banner/banner1.png';
-import bannerdos from '../../assets/images/banner/banner2.png';
-import banner3 from '../../assets/images/banner/banner3.png';
-import banner4 from '../../assets/images/banner/banner4.png';
+import banneruno from '../../assets/images/banner/banner1.webp';
+import bannerdos from '../../assets/images/banner/banner2.webp';
+import banner3 from '../../assets/images/banner/banner3.webp';
+import banner4 from '../../assets/images/banner/banner4.webp';
 
 const HeroBanner: React.FC = () => {
   const bannerImages = [ banneruno,bannerdos,banner3,banner4];
