@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'; // Importa React y hooks
 import { useParams } from 'react-router-dom'; // Importa useParams para obtener parámetros de la URL
 import ProductCard from '../components/ui/ProductCard'; // Importa el componente de tarjeta de producto
 import { Producto } from '../types'; // Importa el tipo Producto que define la estructura de un producto
-import { getProductsByCategory, getPaginatedProducts, getPaginatedProductsByCategory, searchProductsByName } from '../services/productService'; // Importa las funciones para obtener productos y buscar por nombre de firebase
+import { getProductsByCategory, searchProductsByName } from '../services/productService'; // Importa las funciones para obtener productos y buscar por nombre de firebase
 import {MagnifyingGlassIcon } from '@heroicons/react/24/solid'; // Importa el icono de búsqueda de Heroicons
 
 

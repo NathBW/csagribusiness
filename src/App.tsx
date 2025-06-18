@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 //import './firebase/config'; // Importa el archivo config.ts para que se ejecute el script seed
 
@@ -17,7 +17,7 @@ import NotFoundPage from './pages/NotFoundPage';
 import AuthPage from './components/layout/AuthPage';
 import CultivoPage from './pages/CultivoPage';
 import ProtectedRoute from './components/ui/ProtectedRoute';
-import EditProduct from './pages/EditProduct';
+// Importamos el componente ProtectedRoute para proteger rutas de administrador
 import EditProductContainer from './components/product/EditProductContainer'; // Importamos el contenedor
 
 
