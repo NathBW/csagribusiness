@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom'; // Importa Link y useLocation de react-router-dom
 import Logo from '../ui/Logo';
 import { useAuth } from '../layout/AuthContext'; // Asegúrate de importar el hook
 import { KeyIcon, ArrowRightStartOnRectangleIcon } from '@heroicons/react/24/solid'; // o /outline
@@ -57,12 +57,6 @@ const Navbar: React.FC = () => {
 
         <div className="hidden md:block">
           {user ? (
-            /*<button
-              onClick={handleLogout}
-              className="text-surface-dark bg-red-400 border border-red-700 px-4 py-2 rounded-md hover:bg-red-700 text-white"
-            >
-              Cerrar Sesión
-            </button>*/
             <button
               onClick={handleLogout}
               className=" h-10 w-10 flex items-center justify-center text-surface-dark bg-red-300 border border-red-700  rounded-full hover:bg-red-500 text-white transition-colors"
@@ -70,12 +64,6 @@ const Navbar: React.FC = () => {
               <ArrowRightStartOnRectangleIcon className="h-5 w-5 text-red-700" />
             </button>
           ) : (
-            /*<Link
-              to="/auth"
-              className="text-surface-dark bg-secondary border border-secondary-dark px-4 py-2 rounded-md hover:bg-secondary-dark transition-colors"
-            >
-              Iniciar Sesión
-            </Link>*/
             <Link
               to="/auth"
               className="flex items-center gap-2 text-surface-dark bg-secondary rounded-full border border-[#017EC2] px-2 py-2 rounded-2lg hover:bg-secondary-dark transition-colors"

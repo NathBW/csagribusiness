@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import React, { useState } from 'react'; // Importa React y hooks necesarios
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'; // Importa Firebase Auth
 import { useNavigate } from 'react-router-dom'; // Importa useNavigate
 
 const AuthPage: React.FC = () => {

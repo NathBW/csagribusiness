@@ -12,12 +12,12 @@ const Footer: React.FC = () => {
             <h3 className="text-xl font-semibold mb-4">Información de Contacto</h3>
             
             <div className="flex items-start space-x-2">
-              <span className="font-medium">Teléfono:</span>
-              <span>43435465475</span>
+              <span className="font-semibold">Teléfono:</span>
+              <span>+57 (601) 4661725</span>
             </div>
             
             <div className="flex items-start space-x-2">
-              <span className="font-medium">Correo:</span>
+              <span className="font-semibold">Correo:</span>
               <a 
                 href="mailto:csagribusiness@gmail.com" 
                 className="hover:underline transition-colors"
@@ -27,12 +27,12 @@ const Footer: React.FC = () => {
             </div>
             
             <div className="flex items-start space-x-2">
-              <span className="font-medium">Dirección:</span>
-              <span>106 #78 c 78</span>
+              <span className="font-semibold">Dirección:</span>
+              <span>Calle 106 #54-73 Ofc. 703</span>
             </div>
             
             <div className="flex items-start space-x-2">
-              <span>Torreo Baikal.</span>
+              <span>Torre Empresarial Baikal Aqua</span>
             </div>
           </div>
         </div>

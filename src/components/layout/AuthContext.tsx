@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { getAuth, onAuthStateChanged, signOut, User } from 'firebase/auth';
+import React, { createContext, useContext, useEffect, useState } from 'react'; // Importa React y hooks necesarios
+import { getAuth, onAuthStateChanged, signOut, User } from 'firebase/auth'; // Importa Firebase Auth
 
 interface AuthContextType {
   user: User | null;

@@ -3,20 +3,9 @@ import { getFirestore, collection, addDoc} from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 import { getAuth } from 'firebase/auth';
 import { getAnalytics } from "firebase/analytics";
-//import {sampleProducts} from '../data/sampleData';
 
 
 
-// Your web app's Firebase configuration
-// Replace with your actual Firebase config
-//const firebaseConfig = {
-//  apiKey: "YOUR_API_KEY",
-//  authDomain: "YOUR_AUTH_DOMAIN",
-//  projectId: "YOUR_PROJECT_ID",
-//  storageBucket: "YOUR_STORAGE_BUCKET",
-//  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-//  appId: "YOUR_APP_ID"
-//};
 
 const firebaseConfig = {
   apiKey: "AIzaSyClWV7EnhMsx0E-DoPMgI_P-2Al41kL50A",

@@ -4,7 +4,9 @@ import { uploadFileToCloudinary } from '../data/uploadFile' // Importa la funci�
 import { XMarkIcon } from '@heroicons/react/24/solid'; // Importa el icono de cierre de Heroicons
 
 
+
 const AdminPage: React.FC = () => {
+
   const [product, setProduct] = useState({ // Estado para manejar el producto con sus propiedades
     id: '',
     nombre: '',
@@ -143,18 +145,23 @@ const AdminPage: React.FC = () => {
     }
   };
 
-
+  // Maneja la carga de imágenes
+  const [uploadSuccess, setUploadSuccess] = useState(false);
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-  
+
     try {
       const url = await uploadFileToCloudinary(file);
       setProduct((prev) => ({ ...prev, imagen: url }));
+      setUploadSuccess(true); // ✅ Mostrar mensaje de éxito
+      setTimeout(() => setUploadSuccess(false), 3000); // ✅ Ocultar después de 3 segundos
     } catch (err) {
       console.error('Error subiendo imagen:', err);
+      setUploadSuccess(false);
     }
   };
+
 
 
 
@@ -227,7 +234,14 @@ const AdminPage: React.FC = () => {
           >
             Subir Imagen
           </label>
+
+            {uploadSuccess && (
+          <p className="text-green-600 text-sm mt-1">✅ Imagen subida correctamente</p>
+            )}
         </div>
+
+        
+
 
         <div>
           <label className="block text-sm font-medium">URL de la Ficha Técnica</label>
@@ -537,10 +551,10 @@ const AdminPage: React.FC = () => {
         />
         </div>
 
-        <div>
+      <div>
         <label className="block text-sm font-medium">Modo de Uso</label>
-        <input
-          type="text"
+        <textarea
+          //type="text"
           name="instruccionesUso.modoUso"
           value={product.instruccionesUso.modoUso}
           onChange={handleChange}
@@ -551,8 +565,8 @@ const AdminPage: React.FC = () => {
       
       <div>
         <label className="block text-sm font-medium">Preparacion</label>
-        <input
-          type="text"
+        <textarea
+          //type="text"
           name="instruccionesUso.preparacion"
           value={product.instruccionesUso.preparacion}
           onChange={handleChange}
@@ -564,8 +578,8 @@ const AdminPage: React.FC = () => {
 
       <div>
         <label className="block text-sm font-medium">Precaución y Advertencia</label>
-        <input
-          type="text"
+        <textarea
+          //type="text"
           name="instruccionesUso.precaucionAdvertencia"
           value={product.instruccionesUso.precaucionAdvertencia}
           onChange={handleChange}

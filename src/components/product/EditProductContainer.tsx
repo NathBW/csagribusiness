@@ -1,8 +1,8 @@
 // src/pages/EditProductContainer.tsx
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom'; // Para obtener el ID dinámicamente
-import { getProductById } from '../../services/productService';
-import { Timestamp } from 'firebase/firestore';
+import { getProductById } from '../../services/productService'; // Importa la función para obtener el producto por ID
+import { Timestamp } from 'firebase/firestore'; // Importar Timestamp de Firebase Firestore parr manejar fechas
 import EditProduct from '../../pages/EditProduct'; // Asegúrate de ajustar la ruta si está en otra carpeta
 import { Producto } from '../../types';
 

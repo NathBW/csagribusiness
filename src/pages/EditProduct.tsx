@@ -44,17 +44,23 @@ const EditProduct: React.FC<ProductDetailsProps> = ({ product }) => { // Se defi
     }
   };
 
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => { // Función para manejar la carga de imágenes
-    const file = e.target.files?.[0]; // Obtenemos el primer archivo del input
+  // Función para manejar la carga de imágenes
+  const [uploadSuccess, setUploadSuccess] = useState(false);
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
     if (!file) return;
-  
+
     try {
-      const url = await uploadFileToCloudinary(file); // Subimos la imagen a Cloudinary
+      const url = await uploadFileToCloudinary(file);
       setFormData((prev) => ({ ...prev, imagen: url }));
+      setUploadSuccess(true); // ✅ Activar mensaje
+      setTimeout(() => setUploadSuccess(false), 3000); // ✅ Ocultar después de 3s
     } catch (err) {
       console.error('Error subiendo imagen:', err);
+      setUploadSuccess(false);
     }
   };
+
   
   
   return (
@@ -92,6 +98,9 @@ const EditProduct: React.FC<ProductDetailsProps> = ({ product }) => { // Se defi
                 >
                   Cambiar Imagen
                 </label>
+                {uploadSuccess && (
+                <p className="text-white-600 text-sm mt-2">✅ Imagen actualizada correctamente</p>
+              )}
             </div>
 
             <div className="w-full md:w-2/3">
@@ -298,8 +307,8 @@ const EditProduct: React.FC<ProductDetailsProps> = ({ product }) => { // Se defi
           <h2 className="text-center text-2xl font-bold text-surface-white mb-6">Instrucciones de Uso</h2>
                 <div> {/* Sección de instrucciones de uso */}
                   <span className="font-semibold text-surface-white">Modo de Uso</span>
-                  <input
-                    type="text"
+                  <textarea
+                    //type="text"
                     name="modoUso"
                     value={formData.instruccionesUso.modoUso}
                     onChange={(e) => { // Actualizamos el modo de uso
@@ -392,8 +401,8 @@ const EditProduct: React.FC<ProductDetailsProps> = ({ product }) => { // Se defi
 
                 <div> {/* Sección de preparación */}
                   <span className="font-semibold text-surface-white">Preparación</span>
-                  <input
-                    type="text"
+                  <textarea
+                    //type="text"
                     name="preparacion"
                     value={formData.instruccionesUso.preparacion}
                     onChange={(e) => {
@@ -413,8 +422,8 @@ const EditProduct: React.FC<ProductDetailsProps> = ({ product }) => { // Se defi
 
                 <div> {/* Sección de precaución y advertencia */}
                   <span className="font-semibold text-surface-white">Precaución y Advertencia</span>
-                  <input
-                    type="text"
+                  <textarea
+                    //type="text"
                     name="precaucionAdvertencia"
                     value={formData.instruccionesUso.precaucionAdvertencia}
                     onChange={(e) => {

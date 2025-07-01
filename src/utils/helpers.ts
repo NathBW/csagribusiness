@@ -1,16 +1,3 @@
-/**
- * Format a date string or Date object to a localized string
- */
-{/*export const formatDate = (date: Date | string): string => {
-  const dateObj = typeof date === 'string' ? new Date(date) : date;
-  
-  return dateObj.toLocaleDateString('es-ES', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric'
-  });
-};ACCAAAAA*/}
-
 export const formatDate = (dateObj: any): string => {
   if (dateObj instanceof Date) {
     return dateObj.toLocaleDateString();

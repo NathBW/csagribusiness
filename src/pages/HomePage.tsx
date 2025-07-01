@@ -2,10 +2,10 @@ import React from 'react'; // Importa React
 import CategoryCard from '../components/ui/CategoryCard'; // Importa la tarjeta de categoría
 import { CategoriaInfo } from '../types'; // Importa el tipo la información de la categoría
 import HeroBanner from '../components/layout/Banner'; // Importa el banner de héroe
-import ferticate from '../assets/images/category/Cfertilizante.png'
-import plaguicar from '../assets/images/category/Cplaguicidas.png'
-import coadyucar from '../assets/images/category/CCoadyuvantes.png'
-import bioinsucar from '../assets/images/category/CInsumos.png'
+import ferticate from '../assets/images/category/Cfertilizante.webp'
+import plaguicar from '../assets/images/category/Cplaguicidas.webp'
+import coadyucar from '../assets/images/category/CCoadyuvantes.webp'
+import bioinsucar from '../assets/images/category/CInsumos.webp'
 
 // Define la información de las categorías
 const categories: CategoriaInfo[] = [
@@ -33,7 +33,7 @@ const categories: CategoriaInfo[] = [
   {
     id: 'bioinsumos',
     nombre: 'Bioinsumos',
-    descripcion: 'Sistemas de monitoreo para plantas.',
+    descripcion: 'Controlador biológico para plagas.',
     imagen: bioinsucar,
     path: '/categoria/bioinsumos'
   }
