@@ -7,6 +7,7 @@ import { KeyIcon, ArrowRightStartOnRectangleIcon } from '@heroicons/react/24/sol
 
 
 const menuItems = [
+  { label: 'Nosotros', path: '/nosotros' },
   { label: 'Fertilizantes', path: '/categoria/fertilizantes' },
   { label: 'Plaguicidas', path: '/categoria/plaguicidas' },
   { label: 'Coadyuvantes', path: '/categoria/coadyuvantes' },

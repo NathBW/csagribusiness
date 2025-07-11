@@ -17,6 +17,7 @@ import NotFoundPage from './pages/NotFoundPage';
 import AuthPage from './components/layout/AuthPage';
 import CultivoPage from './pages/CultivoPage';
 import ProtectedRoute from './components/ui/ProtectedRoute';
+import Nosotros from './pages/Nosotros';
 // Importamos el componente ProtectedRoute para proteger rutas de administrador
 import EditProductContainer from './components/product/EditProductContainer'; // Importamos el contenedor
 
@@ -38,6 +39,7 @@ function App() {
             <Route path="/auth" element={<AuthPage />} /> {/* Nueva ruta */}
             <Route path="/cultivo/:cultivoId" element={<CultivoPage />} />
             <Route path="*" element={<NotFoundPage />} />
+            <Route path="/nosotros" element={<Nosotros />} /> {/* Ruta para la página "Nosotros" */}
           </Routes>
         </main>
         <Footer />
